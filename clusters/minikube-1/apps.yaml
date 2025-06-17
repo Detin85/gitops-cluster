@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system # Must be in the flux-system namespace
 spec:
   interval: 1m0s # How often to check for changes
-  path: ../../apps # Path to your application's manifests
+  path: ../../apps/minikube-1 # Path to your application's manifests
   prune: true # Delete resources not found in Git
   sourceRef:
     kind: GitRepository

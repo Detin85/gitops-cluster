@@ -1,11 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 metadata:
-  name: nginx-app
+  name: apps
   namespace: flux-system # Must be in the flux-system namespace
 spec:
-  interval: 5m0s # How often to check for changes
-  path: ./apps-nginx # Path to your application's manifests
+  interval: 1m0s # How often to check for changes
+  path: ../../apps # Path to your application's manifests
   prune: true # Delete resources not found in Git
   sourceRef:
     kind: GitRepository

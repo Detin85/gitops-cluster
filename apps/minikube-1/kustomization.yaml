@@ -1,5 +1,12 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-- gotk-components.yaml
-- gotk-sync.yaml
+metadata:
+  name: nginx-app
+  namespace: flux-system # Must be in the flux-system namespace
+spec:
+  interval: 5m0s # How often to check for changes
+  path: ./apps-nginx # Path to your application's manifests
+  prune: true # Delete resources not found in Git
+  sourceRef:
+    kind: GitRepository
+    name: flux-system # Refers to the GitRepository created by bootstrap

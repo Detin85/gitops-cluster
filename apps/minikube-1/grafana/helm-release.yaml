@@ -17,4 +17,4 @@ spec:
   values:
     adminPassword: "admin"
     service:
-      type: LoadBalancer
+      type: ClusterIP

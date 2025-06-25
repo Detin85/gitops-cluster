@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: "6.56.0"  # or latest stable version
+      version: "12.0.1"  # or latest stable version
       sourceRef:
         kind: HelmRepository
         name: grafana

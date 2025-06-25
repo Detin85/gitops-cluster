@@ -1,19 +1,52 @@
+# grafana-helmrelease.yaml
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: grafana
-  namespace: grafana
+  namespace: grafana # Or your desired namespace for Grafana
 spec:
-  interval: 1m0s
+  interval: 1m0s # How often Flux should reconcile this HelmRelease
   chart:
     spec:
       chart: grafana
-      version: "6.56.0"  # or latest stable version
+      version: "7.2.1" # Specify a desired chart version. Use a specific version for stability.
       sourceRef:
         kind: HelmRepository
         name: grafana
-        namespace: flux-system
-  values:
-    adminPassword: "admin"
+        namespace: flux-system # Must match the namespace of your HelmRepository
+  targetNamespace: grafana # The namespace where Grafana will be installed
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+    crds: CreateReplace # Important for CRDs (if any) to be managed during upgrades
+  values: # Customize Grafana values here, similar to a values.yaml file
+    # Example: Enable persistence for Grafana data
+    persistence:
+      enabled: true
+      storageClassName: "your-storage-class-name" # IMPORTANT: Change this to your actual storage class
+      size: 10Gi
+
+    # Example: Configure service type to LoadBalancer to expose Grafana externally
+    # Note: If you don't have a LoadBalancer available or prefer Ingress, adjust this.
     service:
       type: LoadBalancer
+      port: 80
+      targetPort: 3000
+
+    # Example: Set admin password (highly recommended to use a Secret, see notes below)
+    adminPassword: "strong-password-123" # CHANGE THIS! Use a Secret in production!
+
+    # Example: Install some plugins
+    plugins:
+      - grafana-piechart-panel
+      - grafana-worldmap-panel
+
+    # Example: Custom Grafana.ini settings
+    grafana.ini:
+      server:
+        root_url: http://grafana.example.com # Change to your actual domain
+      users:
+        auto_assign_org_role: Viewer # Or "Editor", "Admin"

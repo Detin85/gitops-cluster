@@ -1,0 +1,19 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  interval: 1m0s
+  chart:
+    spec:
+      chart: grafana
+      version: "6.56.0"  # or latest stable version
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: flux-system
+  values:
+    adminPassword: "admin"
+    service:
+      type: LoadBalancer

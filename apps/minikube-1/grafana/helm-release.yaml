@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: grafana
-      version: "8.2.3"  # or latest stable version
+      version: "7.3.10"  # or latest stable version
       sourceRef:
         kind: HelmRepository
         name: grafana
